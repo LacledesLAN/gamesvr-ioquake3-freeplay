@@ -19,7 +19,7 @@ ARG BUILDNODE=unspecified
 ARG SOURCE_COMMIT=unspecified
 
 # `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
-COPY --chown=Quake3:root --from=quake2-builder /output /app
+COPY --chown=Quake3:root --from=quake3-builder /output /app
 RUN true
 
 COPY --chown=Quake3:root /dist/app /app
