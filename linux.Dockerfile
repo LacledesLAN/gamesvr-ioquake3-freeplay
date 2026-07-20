@@ -1,4 +1,4 @@
-FROM lacledeslan/steamcmd:linux as quake3-builder
+FROM lacledeslan/steamcmd:linux AS quake3-builder
 
 ARG contentServer=content.lacledeslan.net
 
@@ -9,28 +9,28 @@ RUN echo "\nDownloading custom LL content from $contentServer" && \
     echo "removing cruft that may have slipped in" && \
         rm ./logos -rf
 
-#=======================================================================`
+
+#---------------------------------
 FROM lacledeslan/gamesvr-ioquake3
 
-ARG BUILD_NODE=unspecified
-ARG GIT_REVISION=unspecified
+ARG BUILD_DATE=unspecified \
+    BUILD_NODE=unspecified \
+    GIT_REVISION=unspecified
 
 HEALTHCHECK NONE
 
 LABEL architecture="amd64" \
-    com.lacledeslan.build-node="$BUILD_NODE" \
-    maintainer="Laclede's LAN <contact@lacledeslan.com>" \
-    org.opencontainers.image.description="Laclede's LAN ioQuake3 Freeplay Dedicated Server" \
-    org.opencontainers.image.revision="$GIT_REVISION" \
-    org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-ioquake3-freeplay" \
-    org.opencontainers.image.vendor="Laclede's LAN"
+      com.lacledeslan.build-node="$BUILD_NODE" \
+      maintainer="Laclede's LAN <contact@lacledeslan.com>" \
+      org.opencontainers.image.created="$BUILD_DATE" \
+      org.opencontainers.image.description="Laclede's LAN ioQuake3 Freeplay Dedicated Server" \
+      org.opencontainers.image.revision="$GIT_REVISION" \
+      org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-ioquake3-freeplay" \
+      org.opencontainers.image.vendor="Laclede's LAN"
 
-# `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
 COPY --chown=Quake3:root --from=quake3-builder /output /app
-RUN true
 
 COPY --chown=Quake3:root /dist/app /app
-RUN true
 
 COPY --chown=Quake3:root /dist/linux /app
 
@@ -44,5 +44,3 @@ USER Quake3Freeplay
 WORKDIR /app/
 
 CMD ["/bin/bash"]
-
-ONBUILD USER root
