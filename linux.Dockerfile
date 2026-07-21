@@ -1,11 +1,11 @@
 FROM lacledeslan/steamcmd:linux AS quake3-builder
 
-ARG contentServer=content.lacledeslan.net
+ARG CONTENT_SERVER=content.lacledeslan.net
 
-RUN echo "\nDownloading custom LL content from $contentServer" && \
+RUN echo "\nDownloading custom LL content from $CONTENT_SERVER" && \
         mkdir --parents /output && \
         cd /output/ && \
-        wget -rkpN -nH --no-verbose --cut-dirs=2 -R "*.htm*,*.ico" -e robots=off "http://"$contentServer"/fastDownloads/q3a/" && \
+        wget -rkpN -nH --no-verbose --cut-dirs=2 -R "*.htm*,*.ico" -e robots=off "http://"$CONTENT_SERVER"/fastDownloads/q3a/" && \
     echo "removing cruft that may have slipped in" && \
         rm ./logos -rf
 
